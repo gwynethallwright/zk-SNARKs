@@ -38,13 +38,29 @@ def check_solution(problem, solution):
     return True
 
 
-def get_witness(problem, solution):
-    witness = solution.copy()
+def check_witness(witness):
+    if witness[0] != witness[-1]:
+        return False
+    return True
+
+
+def get_partial_sum(problem, signed_solution):
     offset = random.randint(RANDOM_OFFSET_LOWER, RANDOM_OFFSET_UPPER)
+    partial_sum = [0]
+    for num_1, num_2 in zip(problem, signed_solution):
+        partial_sum.append(num_1*num_2+partial_sum[-1])
+    for i, num in enumerate(partial_sum):
+        partial_sum[i] = num+offset
+    return partial_sum
+
+
+def get_witness(problem, solution):
+    signed_solution = solution.copy()
     sign = get_random_sign()
-    for i, item in enumerate(witness):
-        witness[i] = sign*item+offset
-    return witness
+    for i, item in enumerate(signed_solution):
+        signed_solution[i] = sign*item
+    partial_sum = get_partial_sum(problem, signed_solution)
+    return partial_sum
 
 
 def main():
@@ -52,6 +68,7 @@ def main():
     solution = [1, 1, -1]
     assert(check_solution(problem, solution))
     witness = get_witness(problem, solution)
+    assert(check_witness(witness))
     print(witness)
 
 
