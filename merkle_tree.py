@@ -1,6 +1,9 @@
 import hashlib
+import random
 
 TREE_DEFAULT_INIT_STRING = 'HELLO WORLD'
+RANDOM_DATA_UPPER = 100
+RANDOM_DATA_LOWER = -RANDOM_DATA_UPPER
 
 
 def hash_string(input_string):
@@ -14,16 +17,15 @@ class MerkleTreeNode:
         self.right = None
 
 
-def add_filler_to_solution(tree):
-    if (len(tree) % 2) == 1:
-        tree = tree + ['']
-    return tree
+def add_random_data_to_solution(tree):
+    random_data = [str(random.randint(RANDOM_DATA_LOWER, RANDOM_DATA_UPPER)) for _ in range(len(tree))]
+    return [x for pair in zip(tree, random_data) for x in pair]
 
 
 def parse_tree_data(solution):
     if not solution:
         return []
-    solution = add_filler_to_solution(solution)
+    solution = add_random_data_to_solution(solution)
     num_extra_nodes = len(solution)-1
     parsed_solution = ['' for _ in range(num_extra_nodes)]+[hash_string(item) for item in solution]
     for i in reversed(range(num_extra_nodes)):
