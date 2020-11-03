@@ -1,8 +1,14 @@
-TREE_INIT_DEFAULT_VALUE = 0
+import hashlib
+
+TREE_DEFAULT_INIT_STRING = 'HELLO WORLD'
+
+
+def hash_string(input_string):
+    return hashlib.sha256(input_string.encode()).hexdigest()
 
 
 class MerkleTreeNode:
-    def __init__(self, value=TREE_INIT_DEFAULT_VALUE):
+    def __init__(self, value=hash_string(TREE_DEFAULT_INIT_STRING)):
         self.value = value
         self.left = None
         self.right = None
@@ -13,7 +19,7 @@ def construct_tree(data, root, index):
         return
     if index >= len(data):
         return
-    root.value = data[index]
+    root.value = hash_string(data[index])
     left_index = 2*index+1
     if left_index >= len(data):
         return
@@ -36,7 +42,7 @@ def dfs_tree_inorder(root):
 
 def main():
     root = MerkleTreeNode()
-    construct_tree([i for i in range(10)], root, 0)
+    construct_tree([str(i) for i in range(10)], root, 0)
     dfs_tree_inorder(root)
 
 
