@@ -14,12 +14,22 @@ class MerkleTreeNode:
         self.right = None
 
 
+def parse_tree_data(solution):
+    if not solution:
+        return []
+    num_extra_nodes = len(solution)-1
+    parsed_solution = ['' for _ in range(num_extra_nodes)]+[hash_string(item) for item in solution]
+    for i in reversed(range(num_extra_nodes)):
+        parsed_solution[i] = hash_string(parsed_solution[2*i+1]+parsed_solution[2*i+2])
+    return parsed_solution
+
+
 def construct_tree(data, root, index):
     if not root:
         return
     if index >= len(data):
         return
-    root.value = hash_string(data[index])
+    root.value = data[index]
     left_index = 2*index+1
     if left_index >= len(data):
         return
@@ -41,8 +51,10 @@ def dfs_tree_inorder(root):
 
 
 def main():
+    solution = [str(i) for i in range(10)]
+    parsed_solution = parse_tree_data(solution)
     root = MerkleTreeNode()
-    construct_tree([str(i) for i in range(10)], root, 0)
+    construct_tree(parsed_solution, root, 0)
     dfs_tree_inorder(root)
 
 
