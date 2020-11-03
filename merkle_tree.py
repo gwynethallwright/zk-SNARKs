@@ -25,7 +25,7 @@ def parse_tree_data(solution):
 
 
 def construct_tree(data, root, index):
-    if not root:
+    if (not root) or (not data):
         return
     if index >= len(data):
         return
