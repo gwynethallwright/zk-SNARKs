@@ -15,6 +15,7 @@ class MerkleTreeNode:
         self.value = value
         self.left = None
         self.right = None
+        self.parent = None
 
 
 def add_random_data_to_solution(tree):
@@ -43,11 +44,13 @@ def construct_tree(data, root, index):
     if left_index >= len(data):
         return
     root.left = MerkleTreeNode(data[left_index])
+    root.left.parent = root
     construct_tree(data, root.left, left_index)
     right_index = 2*index+2
     if right_index >= len(data):
         return
     root.right = MerkleTreeNode(right_index)
+    root.right.parent = root
     construct_tree(data, root.right, right_index)
 
 
