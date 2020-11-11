@@ -70,9 +70,9 @@ def get_authentication_path(node):
     current_node = node
     while current_parent:
         if current_parent.left == current_node:
-            authentication_path.append(current_parent.right.value)
+            authentication_path.append((current_parent.right.value, False))
         else:
-            authentication_path.append(current_parent.left.value)
+            authentication_path.append((current_parent.left.value, True))
         current_node = current_node.parent
         current_parent = current_node.parent
     return authentication_path
@@ -80,8 +80,11 @@ def get_authentication_path(node):
 
 def is_valid_merkle_path(root, first_provided_hash, authentication_path):
     current_hash_string = first_provided_hash
-    for provided_hash in authentication_path:
-        current_hash_string = hash_string(current_hash_string + provided_hash)
+    for provided_hash, add_first in authentication_path:
+        if add_first:
+            current_hash_string = hash_string(provided_hash + current_hash_string)
+        else:
+            current_hash_string = hash_string(current_hash_string + provided_hash)
     return current_hash_string == root.value
 
 
@@ -101,7 +104,7 @@ def main():
     root = MerkleTreeNode()
     construct_tree(parsed_solution, root, 0)
     dfs_tree_inorder(root)
-    # test_merkle_path_verifier(root, root)
+    test_merkle_path_verifier(root, root)
 
 
 if __name__ == '__main__':
