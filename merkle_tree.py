@@ -62,6 +62,22 @@ def dfs_tree_inorder(root):
     dfs_tree_inorder(root.right)
 
 
+def get_authentication_path(node):
+    if not node or not node.parent:
+        return []
+    authentication_path = []
+    current_parent = node.parent
+    current_node = node
+    while current_parent:
+        if current_parent.left == current_node:
+            authentication_path.append(current_parent.right)
+        else:
+            authentication_path.append(current_parent.left)
+        current_node = current_node.parent
+        current_parent = current_node.parent
+    return authentication_path
+
+
 def main():
     solution = [str(i) for i in range(3)]
     parsed_solution = parse_tree_data(solution)
