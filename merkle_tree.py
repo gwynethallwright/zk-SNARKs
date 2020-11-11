@@ -85,12 +85,23 @@ def is_valid_merkle_path(root, first_provided_hash, authentication_path):
     return current_hash_string == root.value
 
 
+def test_merkle_path_verifier(root, node):
+    if node:
+        assert(is_valid_merkle_path(root, node.value, get_authentication_path(node)))
+        if node.left:
+            test_merkle_path_verifier(root, node.left)
+        if node.right:
+            test_merkle_path_verifier(root, node.right)
+    return True
+
+
 def main():
     solution = [str(i) for i in range(3)]
     parsed_solution = parse_tree_data(solution)
     root = MerkleTreeNode()
     construct_tree(parsed_solution, root, 0)
     dfs_tree_inorder(root)
+    # test_merkle_path_verifier(root, root)
 
 
 if __name__ == '__main__':
