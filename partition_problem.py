@@ -60,7 +60,13 @@ def get_witness(problem, solution):
     for i, item in enumerate(signed_solution):
         signed_solution[i] = sign*item
     partial_sum = get_partial_sum(problem, signed_solution)
+    convert_int_list_to_str(partial_sum)
     return partial_sum
+
+
+def convert_int_list_to_str(nums):
+    for index, item in enumerate(nums):
+        nums[index] = str(item)
 
 
 def main():

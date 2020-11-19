@@ -30,12 +30,12 @@ def add_random_data_to_solution(tree):
     return [x for pair in zip(tree, random_data) for x in pair]
 
 
-def parse_tree_data(solution):
-    if not solution:
+def parse_tree_data(witness):
+    if not witness:
         return []
-    solution = add_random_data_to_solution(solution)
-    num_extra_nodes = len(solution)-1
-    parsed_solution = ['' for _ in range(num_extra_nodes)]+[hash_string(item) for item in solution]
+    witness = add_random_data_to_solution(witness)
+    num_extra_nodes = len(witness)-1
+    parsed_solution = ['' for _ in range(num_extra_nodes)]+[hash_string(item) for item in witness]
     for i in reversed(range(num_extra_nodes)):
         parsed_solution[i] = hash_string(parsed_solution[2*i+1]+parsed_solution[2*i+2])
     return parsed_solution
