@@ -18,6 +18,13 @@ class MerkleTreeNode:
         self.parent = None
 
 
+class MerkleTree:
+    def __init__(self, parsed_solution):
+        self.values = parsed_solution
+        self.root = MerkleTreeNode()
+        construct_tree(parsed_solution, self.root, 0)
+
+
 def add_random_data_to_solution(tree):
     random_data = [str(random.randint(RANDOM_DATA_LOWER, RANDOM_DATA_UPPER)) for _ in range(len(tree))]
     return [x for pair in zip(tree, random_data) for x in pair]
@@ -101,10 +108,9 @@ def test_merkle_path_verifier(root, node):
 def main():
     solution = [str(i) for i in range(3)]
     parsed_solution = parse_tree_data(solution)
-    root = MerkleTreeNode()
-    construct_tree(parsed_solution, root, 0)
-    dfs_tree_inorder(root)
-    test_merkle_path_verifier(root, root)
+    merkle_tree = MerkleTree(parsed_solution)
+    dfs_tree_inorder(merkle_tree.root)
+    test_merkle_path_verifier(merkle_tree.root, merkle_tree.root)
 
 
 if __name__ == '__main__':
